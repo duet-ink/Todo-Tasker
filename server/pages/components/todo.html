@@ -1,0 +1,59 @@
+<!-- Todo-list Component  -->
+{{define "todo-list"}}
+<div>
+  <script>
+    const todo_list = {
+      todos: [
+        {
+          img: "/assets/images/logo.webp",
+          alt: "todo-task-logo",
+          title: "Todo Task",
+          details: "a sample todo",
+        },
+        {
+          img: "/assets/images/logo.webp",
+          alt: "todo-task-logo-2",
+          title: "Todo Task 2",
+          details: "a sample todo 2",
+        },
+      ],
+      _todo: {},
+      open: false,
+    };
+  </script>
+  <div x-data="todo_list" x-init="console.log(todos)">
+    {{template "todo-list-popup" .}}
+    <ul>
+      <template x-for="(todo, index) in todos" :key="index">
+        <li :id="index">
+          <img :src="todo.img" :alt="todo.alt" />
+          <hgroup>
+            <h2 x-text="todo.title"></h2>
+            <p x-text="todo.details"></p>
+          </hgroup>
+          <div>
+            <button type="button" @click="_todo = todo; open = true">
+              pop up
+            </button>
+            <input type="checkbox" />
+          </div>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>
+{{end}}
+
+<!-- Todo-list popup -->
+{{define "todo-list-popup"}}
+<dialog :open="open">
+  <section>
+    <form action="/#">
+      <img :src="_todo.img" :alt="_todo.alt" />
+      <input type="text" name="title" id="title" />
+      <textarea rows="50" cols="50"></textarea>
+      <button type="submit">submit</button>
+    </form>
+  </section>
+</dialog>
+{{end}}

@@ -1,0 +1,24 @@
+---
+- hosts: vps
+  vars:
+    repo_dir: "{{ ansible_env.HOME }}/Todo-Tasker"
+    repo_url: "https://github.com/MementoMori11723/Todo-Tasker.git"
+
+  tasks:
+    - name: Ensure the repo is cloned and updated
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_dir }}"
+        version: master
+        update: yes
+        force: yes
+
+    - name: Run `make stop`
+      command: make stop
+      args:
+        chdir: "{{ repo_dir }}"
+
+    - name: Run `make`
+      command: make
+      args:
+        chdir: "{{ repo_dir }}"

@@ -1,0 +1,11 @@
+<!-- Content -->
+{{define "main"}}
+<main x-data="{ login:false }">
+  <button @click="login = !login" x-text="!login ? 'login' : 'logout'"></button>
+  <template x-if="login" x-cloak>
+    <section x-init="htmx.process($el)">
+      <div hx-post="/components/todo-list" hx-trigger="load" hx-swap="outerHTML"></div>
+    </section>
+  </template>
+</main>
+{{end}}

@@ -1,0 +1,23 @@
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: config/Dockerfile
+    container_name: chat-app
+    working_dir: /app
+    env_file:
+      - ../app.env
+    expose:
+      - "11000"
+    volumes:
+      - deploy_sqlite_dir:/data
+    networks:
+      - deploy_net
+
+networks:
+  deploy_net:
+    external: true
+
+volumes:
+  deploy_sqlite_dir:
+    external: true

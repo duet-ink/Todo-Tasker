@@ -1,0 +1,34 @@
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(98% 0 0);
+  --color-base-300: oklch(95% 0 0);
+  --color-base-content: oklch(21% 0.006 285.885);
+  --color-primary: oklch(62% 0.214 259.815);
+  --color-primary-content: oklch(28% 0.091 267.935);
+  --color-secondary: oklch(49% 0.27 292.581);
+  --color-secondary-content: oklch(81% 0.111 293.571);
+  --color-accent: oklch(93% 0.034 272.788);
+  --color-accent-content: oklch(38% 0.063 188.416);
+  --color-neutral: oklch(14% 0.005 285.823);
+  --color-neutral-content: oklch(92% 0.004 286.32);
+  --color-info: oklch(95% 0.026 236.824);
+  --color-info-content: oklch(29% 0.066 243.157);
+  --color-success: oklch(84% 0.143 164.978);
+  --color-success-content: oklch(37% 0.077 168.94);
+  --color-warning: oklch(87% 0.169 91.605);
+  --color-warning-content: oklch(41% 0.112 45.904);
+  --color-error: oklch(70% 0.191 22.216);
+  --color-error-content: oklch(27% 0.105 12.094);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 1;
+}

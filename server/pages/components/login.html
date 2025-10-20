@@ -1,0 +1,48 @@
+<!-- Login Component -->
+{{define "login-component"}}
+<section>
+  <template x-if="signup"> {{template "signup" .}} </template>
+  <template x-if="login"> {{template "login" .}} </template>
+</section>
+{{end}}
+
+<!-- signup -->
+{{define "signup"}}
+<div>
+  <form action="/signup" method="post">
+    <input type="text" name="first_name" placeholder="Enter your name" />
+    <input
+      type="text"
+      name="username"
+      placeholder="Enter your username or email"
+    />
+    <input type="password" name="password" placeholder="password" />
+    <input type="password" name="confirm_password" placeholder="password" />
+    <button type="submit">Sign up</button>
+  </form>
+  <span>or</span>
+  <button type="button">Google login</button>
+  <br />
+  <span>or</span>
+  <button type="button">Login</button>
+</div>
+{{end}}
+
+<!-- login -->
+{{define "login"}}
+<div>
+  <form action="/login" method="post">
+    <input
+      type="text"
+      name="username"
+      placeholder="Enter your username or email"
+    />
+    <input type="password" name="password" placeholder="password" />
+    <button type="submit">Login</button>
+  </form>
+  <button type="button">Google login</button>
+  <br />
+  <span>or</span>
+  <button type="button">Sign up</button>
+</div>
+{{end}}

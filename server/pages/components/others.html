@@ -1,96 +1,101 @@
 <!--Navbar Component -->
 {{define "navbar-componet"}}
-<section>
-  <div>
-    <img src="/assets/images/logo.webp" alt="app logo" width="50" height="50" />
+<!-- Navbar -->
+<!-- Drawer (entire layout) -->
+<nav class="drawer">
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+
+  <!-- Page content -->
+  <div class="drawer-content flex flex-col">
+    <!-- Navbar -->
+    <section class="navbar bg-base-100 shadow-sm">
+      <div class="navbar-start">
+        <label for="my-drawer" class="btn btn-ghost lg:hidden">
+          <i class="ti ti-menu-2"></i>
+        </label>
+        <a href="/#" class="btn btn-ghost text-xl">TODO Tasker</a>
+      </div>
+
+      <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="/login">Login/Sign up</a></li>
+        </ul>
+      </div>
+
+      <div class="navbar-end">
+        <label class="swap swap-rotate">
+          <input type="checkbox" class="theme-controller" value="dark" />
+          <i class="swap-on ti ti-sun-high"></i>
+          <i class="swap-off ti ti-moon"></i>
+        </label>
+      </div>
+    </section>
+
+    <!-- Your template content -->
+    <article class="p-4">{{template "selector" .}}</article>
   </div>
-  <div>
-    <a href="/#about">About</a>
-    <a href="/dashboard">Dashboard</a>
-    <button type="button">Dark mode</button>
-    <a href="/login">Login/Sign up</a>
+
+  <!-- Sidebar -->
+  <div
+    hx-post="/components/sidebar"
+    hx-trigger="load"
+    hx-swap="outerHTML"
+  ></div>
+</nav>
+{{end}}
+
+<!-- Selects Routes -->
+{{define "selector"}}
+<div x-data="selector">
+  <div
+    :hx-post="`/components/${route}`"
+    hx-trigger="load"
+    hx-swap="outerHTML"
+    hx-indicator="#loading"
+  >
+    <span id="loading" class="loading loading-spinner loading-xl"></span>
   </div>
-</section>
+</div>
 {{end}}
 
 <!-- Footer Component -->
-{{define "footer"}}
-<section>
-  <div>
-    <!-- Will be in horizontal view. -->
-    <div>
-      <!-- About the project -->
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, nihil
-        laboriosam quibusdam corrupti vel labore similique quis. Tempora,
-        reprehenderit. Similique blanditiis quibusdam ipsum rem perspiciatis
-        praesentium dolores debitis voluptas molestias?
-      </p>
-    </div>
-    <div>
-      <!-- Links to other features -->
-    </div>
-    <div>
-      <!-- contact us section -->
-    </div>
-  </div>
-  <div>
-    <!-- newsletter subscription -->
-    <form action="/subscribe">
-      <label>
-        <span>Sign Up to get updates</span>
-        <input type="email" name="email" placeholder="Eg. sample@example.com" />
-      </label>
-    </form>
-  </div>
-</section>
-{{end}}
-
-<!-- Login Component -->
-{{define "login-component"}}
-<section>
-  <template x-if="signup"> {{template "signup" .}} </template>
-  <template x-if="login"> {{template "login" .}} </template>
-</section>
-{{end}}
-
-<!-- signup -->
-{{define "signup"}}
-<div>
-  <form action="/signup" method="post">
-    <input type="text" name="first_name" placeholder="Enter your name" />
-    <input
-      type="text"
-      name="username"
-      placeholder="Enter your username or email"
-    />
-    <input type="password" name="password" placeholder="password" />
-    <input type="password" name="confirm_password" placeholder="password" />
-    <button type="submit">Sign up</button>
+{{define "footer-componet"}}
+<footer class="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
+  <nav>
+    <h6 class="footer-title">Services</h6>
+    <a class="link link-hover">Branding</a>
+    <a class="link link-hover">Design</a>
+    <a class="link link-hover">Marketing</a>
+    <a class="link link-hover">Advertisement</a>
+  </nav>
+  <nav>
+    <h6 class="footer-title">Company</h6>
+    <a class="link link-hover">About us</a>
+    <a class="link link-hover">Contact</a>
+    <a class="link link-hover">Jobs</a>
+    <a class="link link-hover">Press kit</a>
+  </nav>
+  <nav>
+    <h6 class="footer-title">Legal</h6>
+    <a class="link link-hover">Terms of use</a>
+    <a class="link link-hover">Privacy policy</a>
+    <a class="link link-hover">Cookie policy</a>
+  </nav>
+  <form>
+    <h6 class="footer-title">Newsletter</h6>
+    <fieldset class="w-80">
+      <label>Enter your email address</label>
+      <div class="join">
+        <input
+          type="text"
+          placeholder="username@site.com"
+          class="input join-item"
+        />
+        <button class="btn btn-primary join-item">Subscribe</button>
+      </div>
+    </fieldset>
   </form>
-  <span>or</span>
-  <button type="button">Google login</button>
-  <br />
-  <span>or</span>
-  <button type="button">Login</button>
-</div>
-{{end}}
-
-<!-- login -->
-{{define "login"}}
-<div>
-  <form action="/login" method="post">
-    <input
-      type="text"
-      name="username"
-      placeholder="Enter your username or email"
-    />
-    <input type="password" name="password" placeholder="password" />
-    <button type="submit">Login</button>
-  </form>
-  <button type="button">Google login</button>
-  <br />
-  <span>or</span>
-  <button type="button">Sign up</button>
-</div>
+</footer>
 {{end}}

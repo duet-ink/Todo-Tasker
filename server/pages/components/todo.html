@@ -1,59 +1,120 @@
 <!-- Todo-list Component  -->
 {{define "todo-list"}}
-<div>
+<section>
   <script>
     const todo_list = {
       todos: [
         {
+          title: "test-1",
+          url: "/#test",
           img: "/assets/images/logo.webp",
-          alt: "todo-task-logo",
-          title: "Todo Task",
-          details: "a sample todo",
+          alt: "this is an image",
+          description: "this is some description",
+          user_name: "example_user_1",
+          created_at: new Date(),
         },
         {
+          title: "test-2",
+          url: "/#test",
           img: "/assets/images/logo.webp",
-          alt: "todo-task-logo-2",
-          title: "Todo Task 2",
-          details: "a sample todo 2",
+          alt: "this is an image",
+          description: "this is some description",
+          user_name: "example_user_2",
+          created_at: new Date(),
         },
       ],
       _todo: {},
-      open: false,
+
+      get(route, func, param) {},
     };
   </script>
-  <div x-data="todo_list" x-init="console.log(todos)">
+  <div x-data="todo_list" class="p-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <!-- Include your popup template -->
     {{template "todo-list-popup" .}}
-    <ul>
-      <template x-for="(todo, index) in todos" :key="index">
-        <li :id="index">
-          <img :src="todo.img" :alt="todo.alt" />
-          <hgroup>
-            <h2 x-text="todo.title"></h2>
-            <p x-text="todo.details"></p>
-          </hgroup>
-          <div>
-            <button type="button" @click="_todo = todo; open = true">
-              pop up
-            </button>
-            <input type="checkbox" />
+
+    <template x-for="(todo, index) in todos" :key="index" x-cloak>
+      <div class="card w-96 bg-base-100 shadow-sm hover:shadow-md transition">
+        <figure class="p-4">
+          <a :href="todo.url">
+            <img
+              :src="todo.img"
+              :alt="todo.alt"
+              class="rounded-xl object-cover h-48 w-full"
+            />
+          </a>
+        </figure>
+
+        <div class="card-body">
+          <span class="badge badge-sm badge-warning" x-show="todo.featured"
+            >Featured</span
+          >
+
+          <div class="flex justify-between items-center">
+            <h2 class="card-title text-2xl font-bold">
+              <a
+                :href="todo.url"
+                class="hover:text-primary transition"
+                x-text="todo.title"
+              ></a>
+            </h2>
+            <span
+              class="text-xs opacity-70"
+              x-text="'@' + todo.user_name"
+            ></span>
           </div>
-        </li>
-      </template>
-    </ul>
+
+          <div
+            class="collapse collapse-arrow bg-base-100 border border-base-300"
+          >
+            <input type="checkbox" name="my-accordion-2" />
+            <div class="collapse-title font-semibold" x-text="todo.description">
+            </div>
+            <div class="collapse-content text-sm">
+              Click the "Sign Up" button in the top right corner and follow the
+              registration process.
+            </div>
+          </div>
+
+          <div class="card-actions justify-between items-center mt-4">
+            <span
+              class="text-xs opacity-60"
+              x-text="new Date(todo.created_at).toLocaleDateString()"
+            ></span>
+
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                @click="_todo = todo; todo_edit.showModal()"
+              >
+                Edit
+              </button>
+              <br />
+              <label>
+                <span>Task Complete?</span>
+                <input type="checkbox" checked="checked" class="toggle" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
-</div>
+</section>
 {{end}}
 
 <!-- Todo-list popup -->
 {{define "todo-list-popup"}}
-<dialog :open="open">
-  <section>
-    <form action="/#">
-      <img :src="_todo.img" :alt="_todo.alt" />
-      <input type="text" name="title" id="title" />
-      <textarea rows="50" cols="50"></textarea>
-      <button type="submit">submit</button>
-    </form>
-  </section>
+<dialog id="todo_edit" class="modal" @click="$el.close()">
+  <div class="modal-box" @click.stop>
+    <h3 class="text-lg font-bold">Hello!</h3>
+    <p class="py-4">Press ESC key or click the button below to close</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn" @click="_todo = {}">Close</button>
+      </form>
+    </div>
+  </div>
 </dialog>
 {{end}}

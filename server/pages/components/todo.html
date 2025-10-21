@@ -1,5 +1,5 @@
 <!-- Todo-list Component  -->
-{{define "todo-list"}}
+{{define "todo"}}
 <section>
   <script>
     const todo_list = {
@@ -24,87 +24,16 @@
         },
       ],
       _todo: {},
-
-      get(route, func, param) {},
     };
   </script>
-  <div x-data="todo_list" class="p-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-    <!-- Include your popup template -->
-    {{template "todo-list-popup" .}}
-
-    <template x-for="(todo, index) in todos" :key="index" x-cloak>
-      <div class="card w-96 bg-base-100 shadow-sm hover:shadow-md transition">
-        <figure class="p-4">
-          <a :href="todo.url">
-            <img
-              :src="todo.img"
-              :alt="todo.alt"
-              class="rounded-xl object-cover h-48 w-full"
-            />
-          </a>
-        </figure>
-
-        <div class="card-body">
-          <span class="badge badge-sm badge-warning" x-show="todo.featured"
-            >Featured</span
-          >
-
-          <div class="flex justify-between items-center">
-            <h2 class="card-title text-2xl font-bold">
-              <a
-                :href="todo.url"
-                class="hover:text-primary transition"
-                x-text="todo.title"
-              ></a>
-            </h2>
-            <span
-              class="text-xs opacity-70"
-              x-text="'@' + todo.user_name"
-            ></span>
-          </div>
-
-          <div
-            class="collapse collapse-arrow bg-base-100 border border-base-300"
-          >
-            <input type="checkbox" name="my-accordion-2" />
-            <div class="collapse-title font-semibold" x-text="todo.description">
-            </div>
-            <div class="collapse-content text-sm">
-              Click the "Sign Up" button in the top right corner and follow the
-              registration process.
-            </div>
-          </div>
-
-          <div class="card-actions justify-between items-center mt-4">
-            <span
-              class="text-xs opacity-60"
-              x-text="new Date(todo.created_at).toLocaleDateString()"
-            ></span>
-
-            <div class="flex items-center gap-2">
-              <button
-                type="button"
-                class="btn btn-outline btn-sm"
-                @click="_todo = todo; todo_edit.showModal()"
-              >
-                Edit
-              </button>
-              <br />
-              <label>
-                <span>Task Complete?</span>
-                <input type="checkbox" checked="checked" class="toggle" />
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
+  <div hx-post="/c/todo.card" hx-trigger="load" hx-swap="outerHTML" hx-indicator="#loading">
+    <span id="loading" class="loading loading-spinner loading-xl"></span>
   </div>
 </section>
 {{end}}
 
 <!-- Todo-list popup -->
-{{define "todo-list-popup"}}
+{{define "todo.popup"}}
 <dialog id="todo_edit" class="modal" @click="$el.close()">
   <div class="modal-box" @click.stop>
     <h3 class="text-lg font-bold">Hello!</h3>
@@ -117,4 +46,57 @@
     </div>
   </div>
 </dialog>
+{{end}}
+
+<!-- Todo - Card -->
+{{define "todo.card"}}
+<div x-data="todo_list" class="p-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  <!-- Include your popup template -->
+  {{template "todo.popup" .}}
+
+  <template x-for="(todo, index) in todos" :key="index" x-cloak>
+    <div class="card w-96 bg-base-100 shadow-sm hover:shadow-md transition">
+      <figure class="p-4">
+        <a :href="todo.url">
+          <img :src="todo.img" :alt="todo.alt" class="rounded-xl object-cover h-48 w-full" />
+        </a>
+      </figure>
+
+      <div class="card-body">
+        <span class="badge badge-sm badge-warning" x-show="todo.featured">Featured</span>
+
+        <div class="flex justify-between items-center">
+          <h2 class="card-title text-2xl font-bold">
+            <a :href="todo.url" class="hover:text-primary transition" x-text="todo.title"></a>
+          </h2>
+          <span class="text-xs opacity-70" x-text="'@' + todo.user_name"></span>
+        </div>
+
+        <div class="collapse collapse-arrow bg-base-100 border border-base-300">
+          <input type="checkbox" name="my-accordion-2" />
+          <div class="collapse-title font-semibold" x-text="todo.description"></div>
+          <div class="collapse-content text-sm">
+            Click the "Sign Up" button in the top right corner and follow the
+            registration process.
+          </div>
+        </div>
+
+        <div class="card-actions justify-between items-center mt-4">
+          <span class="text-xs opacity-60" x-text="new Date(todo.created_at).toLocaleDateString()"></span>
+
+          <div class="flex items-center gap-2">
+            <button type="button" class="btn btn-outline btn-sm" @click="_todo = todo; todo_edit.showModal()">
+              Edit
+            </button>
+            <br />
+            <label>
+              <span>Task Complete?</span>
+              <input type="checkbox" checked="checked" class="toggle" />
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>
 {{end}}

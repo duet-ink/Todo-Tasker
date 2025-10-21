@@ -6,13 +6,20 @@ import (
 	"os"
 )
 
-func New() string {
+func New() (string, string) {
 	_port := os.Getenv("PORT")
+	_adminPort := os.Getenv("ADMIN_PORT")
 	if _port == "" {
 		_port = "80"
 	}
 	_port = fmt.Sprintf(
 		":%s", _port,
+	)
+	if _adminPort == "" {
+		_adminPort = "4657"
+	}
+	_adminPort = fmt.Sprintf(
+		":%s", _adminPort,
 	)
 	slog.SetDefault(
 		slog.New(
@@ -21,5 +28,5 @@ func New() string {
 			),
 		),
 	)
-	return _port
+	return _port, _adminPort
 }

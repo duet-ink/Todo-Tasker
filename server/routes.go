@@ -7,7 +7,7 @@ import (
 
 func componentsPage(w http.ResponseWriter, r *http.Request) {
 	name := r.PathValue("name")
-	slog.Info(name)
+
 	if err := _componentsTempl.ExecuteTemplate(w, name, nil); err != nil {
 		slog.Error(err.Error())
 		http.Redirect(w, r, "/404", http.StatusFound)

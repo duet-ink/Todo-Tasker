@@ -3,13 +3,13 @@
 <main>
   <script>
     const selector = {
-      route: "todo-list",
+      route: "todo",
     };
   </script>
 
   <!-- Navbar Section -->
   <div
-    hx-post="/components/navbar-componet"
+    hx-post="/c/navbar"
     hx-trigger="load"
     hx-swap="outerHTML"
   ></div>
@@ -17,7 +17,7 @@
   <hr />
   <!-- Footer Section -->
   <div
-    hx-post="/components/footer-componet"
+    hx-post="/c/footer"
     hx-trigger="load"
     hx-swap="outerHTML"
   ></div>

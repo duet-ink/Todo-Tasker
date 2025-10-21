@@ -16,7 +16,7 @@ type (
 	}
 
 	jsonApi struct {
-		Login bool `json:"login"`
+		Login bool   `json:"login"`
 		Todos []todo `json:"todos"`
 	}
 
@@ -38,29 +38,23 @@ var (
 	//go:embed assets
 	_assets embed.FS
 
-	_dir        = "pages/"
-	_layout     = _dir + "layout.html"
+	_dir    = "pages/"
+	_layout = _dir + "layout.html"
+
 	_components = "components/*.html"
 
-	_indexTempl      *template.Template
-	_adminTempl      *template.Template
-	_errorTempl      *template.Template
+	_indexTempl *template.Template
+	_adminTempl *template.Template
+	_errorTempl *template.Template
+
 	_componentsTempl *template.Template
-
-	_routes = routes{
-		"/":       indexPage,
-		"/404/":   pageNotFound,
-		"/admin/": adminPage,
-		"/error/": errorPage,
-
-		"POST /components/{name}": componentsPage,
-	}
 )
 
 func init() {
 	_indexTempl = getTemplate("index.html")
 	_adminTempl = getTemplate("admin.html")
 	_errorTempl = getTemplate("error.html")
+
 	_componentsTempl = getTemplate(_components)
 }
 
@@ -72,7 +66,7 @@ func getTemplate(filename string) *template.Template {
 	return temp
 }
 
-func New() *http.ServeMux {
+func (_routes routes) createRoutes() *http.ServeMux {
 	_mux := http.NewServeMux()
 	_mux.Handle("/assets/", http.FileServerFS(_assets))
 	for _route, _handler := range _routes {
@@ -81,4 +75,20 @@ func New() *http.ServeMux {
 		)
 	}
 	return _mux
+}
+
+func New() *http.ServeMux {
+	return routes{
+		"/":       indexPage,
+		"/404/":   pageNotFound,
+		"/error/": errorPage,
+
+		"POST /c/{name}": componentsPage,
+	}.createRoutes()
+}
+
+func NewAdmin() *http.ServeMux {
+	return routes{
+		"/admin/": adminPage,
+	}.createRoutes()
 }

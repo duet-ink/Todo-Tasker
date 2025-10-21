@@ -1,0 +1,51 @@
+<!--Navbar Component -->
+{{define "navbar"}}
+<!-- Drawer (entire layout) -->
+<nav class="drawer">
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+
+  <!-- Page content -->
+  <div class="drawer-content flex flex-col">
+    <!-- Navbar -->
+    <section class="navbar bg-base-100 shadow-sm">
+      <div class="navbar-start">
+        <label for="my-drawer" class="btn btn-ghost lg:hidden">
+          <i class="ti ti-menu-2"></i>
+        </label>
+        <a href="/#" class="btn btn-ghost text-xl">TODO Tasker</a>
+      </div>
+
+      <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="/login">Login/Sign up</a></li>
+        </ul>
+      </div>
+
+      <div class="navbar-end">
+        <label class="swap swap-rotate">
+          <input type="checkbox" class="theme-controller" value="dark" />
+          <i class="swap-on ti ti-sun-high"></i>
+          <i class="swap-off ti ti-moon"></i>
+        </label>
+      </div>
+    </section>
+
+    <!-- Your template content -->
+    <article class="p-4">{{template "selector" .}}</article>
+  </div>
+
+  <!-- Sidebar -->
+  <div hx-post="/c/sidebar" hx-trigger="load" hx-swap="outerHTML"></div>
+</nav>
+{{end}}
+
+<!-- Selects Routes -->
+{{define "selector"}}
+<div x-data="selector">
+  <div :hx-post="`/c/${route}`" hx-trigger="load" hx-swap="outerHTML" hx-indicator="#loading">
+    <span id="loading" class="loading loading-spinner loading-xl"></span>
+  </div>
+</div>
+{{end}}

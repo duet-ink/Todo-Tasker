@@ -1,3 +1,5 @@
+test:
+	@go test ./test/ -v
 run:
 	@docker-compose -f config/deploy.yml -p todo-tasker up --build -d
 stop:

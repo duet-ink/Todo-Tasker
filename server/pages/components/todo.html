@@ -23,7 +23,7 @@
           created_at: new Date(),
         },
       ],
-      _todo: {},
+      _todo: 0,
     };
   </script>
   <div hx-post="/c/todo.card" hx-trigger="load" hx-swap="outerHTML" hx-indicator="#loading">
@@ -36,12 +36,14 @@
 {{define "todo.popup"}}
 <dialog id="todo_edit" class="modal" @click="$el.close()">
   <div class="modal-box" @click.stop>
-    <h3 class="text-lg font-bold">Hello!</h3>
-    <p class="py-4">Press ESC key or click the button below to close</p>
+    <div>
+      <textarea class="textarea textarea-ghost" @change="todos[_todo].description = $el.target.value"
+        :placeholder="todos[_todo].description"></textarea>
+    </div>
     <div class="modal-action">
       <form method="dialog">
         <!-- if there is a button in form, it will close the modal -->
-        <button class="btn" @click="_todo = {}">Close</button>
+        <button class="btn">Close</button>
       </form>
     </div>
   </div>
@@ -85,7 +87,7 @@
           <span class="text-xs opacity-60" x-text="new Date(todo.created_at).toLocaleDateString()"></span>
 
           <div class="flex items-center gap-2">
-            <button type="button" class="btn btn-outline btn-sm" @click="_todo = todo; todo_edit.showModal()">
+            <button type="button" class="btn btn-outline btn-sm" @click="_todo = index; todo_edit.showModal()">
               Edit
             </button>
             <br />

@@ -4,6 +4,7 @@ import (
 	"embed"
 	"html/template"
 	"log/slog"
+	"maps"
 	"net/http"
 )
 
@@ -66,29 +67,33 @@ func getTemplate(filename string) *template.Template {
 	return temp
 }
 
+func (_routes routes) getCommonRoutes() routes {
+	_commonRoutes := routes{
+		"/assets/":       assetsWithType,
+		"POST /c/{name}": componentsPage,
+		"/404/":          pageNotFound,
+		"/error/":        errorPage,
+	}
+	maps.Copy(_routes, _commonRoutes)
+	return _routes
+}
+
 func (_routes routes) createRoutes() *http.ServeMux {
 	_mux := http.NewServeMux()
-	_mux.Handle("/assets/", http.FileServerFS(_assets))
-	for _route, _handler := range _routes {
-		_mux.HandleFunc(
-			_route, _handler,
-		)
+	for route, handler := range _routes {
+		_mux.HandleFunc(route, handler)
 	}
 	return _mux
 }
 
 func New() *http.ServeMux {
 	return routes{
-		"/":       indexPage,
-		"/404/":   pageNotFound,
-		"/error/": errorPage,
-
-		"POST /c/{name}": componentsPage,
-	}.createRoutes()
+		"/": indexPage,
+	}.getCommonRoutes().createRoutes()
 }
 
 func NewAdmin() *http.ServeMux {
 	return routes{
-		"/admin/": adminPage,
-	}.createRoutes()
+		"/": adminPage,
+	}.getCommonRoutes().createRoutes()
 }

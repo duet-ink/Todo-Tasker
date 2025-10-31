@@ -1,9 +1,33 @@
 package server
 
 import (
+	"fmt"
 	"log/slog"
 	"net/http"
+	"strings"
 )
+
+func assetsWithType(w http.ResponseWriter, r *http.Request) {
+	parts := strings.Split(r.URL.Path, ".")
+	if len(parts) > 1 {
+		_type := parts[len(parts)-1]
+		mimeType := map[string]string{
+			"wasm": "wasm",
+			"js":   "javascript",
+		}
+		if _mime, ok := mimeType[_type]; ok {
+			w.Header().Set(
+				"Content-Type",
+				fmt.Sprintf(
+					"application/%s",
+					_mime,
+				),
+			)
+		}
+	}
+	fileServer := http.FileServerFS(_assets)
+	fileServer.ServeHTTP(w, r)
+}
 
 func componentsPage(w http.ResponseWriter, r *http.Request) {
 	name := r.PathValue("name")

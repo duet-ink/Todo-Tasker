@@ -2,7 +2,7 @@
 
 Version-wise todos for building a production-ready application.
 
-**Current Version:** v0.0.6
+**Current Version:** v0.0.7
 
 ---
 
